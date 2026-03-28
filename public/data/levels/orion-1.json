@@ -1,0 +1,29 @@
+{
+  "id": "orion-1",
+  "title": "The Hunter",
+  "constellation": "Orion",
+  "image": "/images/boards/orion-1.jpg",
+  "width": 800,
+  "height": 800,
+  "clue": "Look for the three stars forming the hunter's belt, then trace outward to shoulders and feet.",
+  "difficulty": "medium",
+  "stars": [
+    { "id": "betelgeuse", "x": 250, "y": 150, "r": 8, "name": "Betelgeuse", "mag": 0.42 },
+    { "id": "bellatrix", "x": 550, "y": 170, "r": 7, "name": "Bellatrix", "mag": 1.64 },
+    { "id": "alnitak", "x": 340, "y": 400, "r": 6, "name": "Alnitak", "mag": 1.77 },
+    { "id": "alnilam", "x": 400, "y": 390, "r": 6, "name": "Alnilam", "mag": 1.69 },
+    { "id": "mintaka", "x": 460, "y": 380, "r": 6, "name": "Mintaka", "mag": 2.23 },
+    { "id": "saiph", "x": 300, "y": 650, "r": 7, "name": "Saiph", "mag": 2.09 },
+    { "id": "rigel", "x": 520, "y": 670, "r": 8, "name": "Rigel", "mag": 0.13 }
+  ],
+  "answerEdges": [
+    ["betelgeuse", "bellatrix"],
+    ["betelgeuse", "alnitak"],
+    ["bellatrix", "mintaka"],
+    ["alnitak", "alnilam"],
+    ["alnilam", "mintaka"],
+    ["alnitak", "saiph"],
+    ["mintaka", "rigel"],
+    ["saiph", "rigel"]
+  ]
+}
