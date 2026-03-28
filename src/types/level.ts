@@ -41,3 +41,24 @@ export interface ScoreResult {
   recall: number;
   score: number;
 }
+
+/** Classified edges for the answer reveal overlay. */
+export interface EdgeClassification {
+  correct: Edge[];
+  wrong: Edge[];
+  missed: [string, string][];
+}
+
+/** State passed from Play → Results via router location.state. */
+export interface ResultsState {
+  result: ScoreResult;
+  time: string;
+  levelId: string;
+  levelTitle: string;
+  playerEdges: Edge[];
+  answerEdges: [string, string][];
+  stars: StarNode[];
+  boardWidth: number;
+  boardHeight: number;
+  boardImage: string;
+}
