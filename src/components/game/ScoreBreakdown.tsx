@@ -8,10 +8,10 @@ interface ScoreBreakdownProps {
 
 const statItem = (label: string, value: string | number, color?: string) => (
   <div className="flex flex-col items-center gap-1">
-    <span className={`text-2xl font-semibold tabular-nums ${color ?? "text-foreground"}`}>
+    <span className={`text-2xl font-semibold tabular-nums font-display ${color ?? "text-foreground"}`}>
       {value}
     </span>
-    <span className="text-xs text-muted-foreground uppercase tracking-wider">{label}</span>
+    <span className="text-xs text-muted-foreground uppercase tracking-widest">{label}</span>
   </div>
 );
 
@@ -23,21 +23,19 @@ export default function ScoreBreakdown({ result, time }: ScoreBreakdownProps) {
       transition={{ duration: 0.5, ease: "easeOut" }}
       className="glass-panel p-8 max-w-md mx-auto"
     >
-      {/* Big score */}
       <div className="text-center mb-8">
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.4 }}
         >
-          <span className="text-7xl font-serif font-bold text-primary tabular-nums">
+          <span className="text-7xl font-display font-bold tabular-nums bg-gradient-to-r from-primary via-glow-pink to-glow-blue bg-clip-text text-transparent glow-text">
             {result.score}
           </span>
           <p className="text-muted-foreground text-sm mt-1">out of 100</p>
         </motion.div>
       </div>
 
-      {/* Stats grid */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

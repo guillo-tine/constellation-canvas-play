@@ -13,17 +13,17 @@ interface BoardOverlayProps {
   revealEdges?: EdgeClassification | null;
 }
 
-/** SVG colors pulled from design tokens (inlined for SVG compatibility). */
 const COLORS = {
-  edge: "hsl(215 65% 65%)",
+  edge: "hsl(270 70% 70%)",
   correct: "hsl(145 60% 50%)",
   wrong: "hsl(0 72% 58%)",
   missed: "hsl(45 80% 55%)",
-  star: "hsl(45 90% 65%)",
-  starHover: "hsl(45 90% 70%)",
-  starSelected: "hsl(45 95% 75%)",
-  starStroke: "hsl(0 0% 100%)",
-  label: "hsl(0 0% 85%)",
+  star: "hsl(50 90% 65%)",
+  starHover: "hsl(50 90% 80%)",
+  starSelected: "hsl(270 80% 75%)",
+  starStroke: "hsl(270 60% 80%)",
+  label: "hsl(270 30% 80%)",
+  glow: "hsl(270 80% 65%)",
 } as const;
 
 export default function BoardOverlay({
@@ -72,16 +72,14 @@ export default function BoardOverlay({
     return (
       <line
         key={key}
-        x1={a.x}
-        y1={a.y}
-        x2={b.x}
-        y2={b.y}
+        x1={a.x} y1={a.y} x2={b.x} y2={b.y}
         stroke={color}
         strokeWidth={opts?.width ?? 2.5}
         strokeLinecap="round"
         strokeDasharray={opts?.dashed ? "6 4" : undefined}
         className="transition-all duration-200"
         opacity={opts?.opacity ?? 0.85}
+        filter="url(#edgeGlow)"
       />
     );
   }
@@ -92,11 +90,26 @@ export default function BoardOverlay({
       className="absolute inset-0 w-full h-full"
       style={{ pointerEvents: disabled ? "none" : "auto" }}
     >
-      {/* Player edges (play mode) */}
+      <defs>
+        <filter id="starGlow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="3" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+        <filter id="edgeGlow" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="1.5" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
+
       {!revealEdges &&
         edges.map((e, i) => renderLine(e.from, e.to, COLORS.edge, `edge-${i}`))}
 
-      {/* Reveal edges (results mode) */}
       {revealEdges?.correct.map((e, i) =>
         renderLine(e.from, e.to, COLORS.correct, `correct-${i}`)
       )}
@@ -107,7 +120,6 @@ export default function BoardOverlay({
         renderLine(a, b, COLORS.missed, `missed-${i}`, { dashed: true, width: 2, opacity: 0.7 })
       )}
 
-      {/* Selection preview line */}
       {selected && hovered && selected !== hovered && (() => {
         const a = starMap.get(selected);
         const b = starMap.get(hovered);
@@ -115,26 +127,26 @@ export default function BoardOverlay({
         return (
           <line
             x1={a.x} y1={a.y} x2={b.x} y2={b.y}
-            stroke={COLORS.edge}
+            stroke={COLORS.glow}
             strokeWidth={1.5}
             strokeDasharray="4 3"
             opacity={0.5}
+            filter="url(#edgeGlow)"
           />
         );
       })()}
 
-      {/* Stars */}
       {stars.map((star) => {
         const isSelected = selected === star.id;
         const isHov = hovered === star.id;
         const fill = isSelected ? COLORS.starSelected : isHov ? COLORS.starHover : COLORS.star;
 
         return (
-          <g key={star.id}>
+          <g key={star.id} filter="url(#starGlow)">
             <circle
-              cx={star.x} cy={star.y} r={star.r + 6}
-              fill={COLORS.star}
-              opacity={isSelected ? 0.3 : 0}
+              cx={star.x} cy={star.y} r={star.r + 8}
+              fill={COLORS.glow}
+              opacity={isSelected ? 0.4 : isHov ? 0.2 : 0}
               className="transition-all duration-200"
             />
             <circle
@@ -149,13 +161,14 @@ export default function BoardOverlay({
             />
             {star.name && (
               <text
-                x={star.x} y={star.y - star.r - 6}
+                x={star.x} y={star.y - star.r - 8}
                 textAnchor="middle"
                 fill={COLORS.label}
                 fontSize={10}
-                fontFamily="DM Sans, sans-serif"
+                fontFamily="Space Grotesk, sans-serif"
                 opacity={isHov || isSelected ? 1 : 0.5}
                 className="transition-opacity duration-200 pointer-events-none select-none"
+                style={{ textShadow: `0 0 8px ${COLORS.glow}` }}
               >
                 {star.name}
               </text>

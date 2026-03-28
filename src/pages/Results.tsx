@@ -20,7 +20,7 @@ export default function Results() {
   );
 
   if (!state || !classification) {
-    return <StatusMessage variant="empty" message="No results to show." />;
+    return <StatusMessage variant="empty" message="No transmission data received." />;
   }
 
   const {
@@ -29,17 +29,18 @@ export default function Results() {
   } = state;
 
   return (
-    <PageShell title={`Results — ${levelTitle}`}>
+    <PageShell title={`Mission Report — ${levelTitle}`}>
       <div className="max-w-3xl mx-auto space-y-10">
         <ScoreBreakdown result={result} time={time} />
 
-        {/* Answer reveal */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.5 }}
         >
-          <h2 className="font-serif text-xl text-center mb-4">Answer Reveal</h2>
+          <h2 className="font-display text-lg text-center mb-4 tracking-widest uppercase text-primary">
+            Answer Reveal
+          </h2>
 
           <div className="flex justify-center gap-4 text-xs text-muted-foreground mb-3 flex-wrap">
             <span className="flex items-center gap-1.5">
@@ -66,21 +67,31 @@ export default function Results() {
           />
         </motion.div>
 
-        {/* Actions */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
           className="flex flex-col sm:flex-row gap-3 justify-center"
         >
-          <Button variant="outline" onClick={() => navigate(`/play?level=${levelId}`)} className="rounded-xl">
-            <RotateCcw className="w-4 h-4 mr-1.5" /> Play Again
+          <Button
+            variant="outline"
+            onClick={() => navigate(`/play?level=${levelId}`)}
+            className="rounded-xl border-border hover:bg-secondary"
+          >
+            <RotateCcw className="w-4 h-4 mr-1.5" /> Retry Mission
           </Button>
-          <Button variant="outline" onClick={() => navigate("/")} className="rounded-xl">
-            <ArrowRight className="w-4 h-4 mr-1.5" /> New Puzzle
+          <Button
+            variant="outline"
+            onClick={() => navigate("/")}
+            className="rounded-xl border-border hover:bg-secondary"
+          >
+            <ArrowRight className="w-4 h-4 mr-1.5" /> New Mission
           </Button>
-          <Button onClick={() => navigate("/")} className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/90">
-            <Home className="w-4 h-4 mr-1.5" /> Back Home
+          <Button
+            onClick={() => navigate("/")}
+            className="rounded-xl bg-primary text-primary-foreground hover:bg-primary/80 font-display tracking-wider"
+          >
+            <Home className="w-4 h-4 mr-1.5" /> Base
           </Button>
         </motion.div>
       </div>
