@@ -1,11 +1,9 @@
 import { ReactNode } from "react";
-import { Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import SpaceBackground from "@/components/space/SpaceBackground";
 
 interface PageShellProps {
-  /** Right-aligned header text or element */
   headerRight?: ReactNode;
-  /** Override the default title next to the logo */
   title?: string;
   children: ReactNode;
 }
@@ -14,20 +12,25 @@ export default function PageShell({ headerRight, title, children }: PageShellPro
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="px-6 py-4 shrink-0">
+    <div className="min-h-screen flex flex-col relative">
+      <SpaceBackground />
+      <header className="px-6 py-4 shrink-0 relative z-10">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <button
             onClick={() => navigate("/")}
-            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+            className="flex items-center gap-3 hover:opacity-80 transition-opacity group"
           >
-            <Star className="w-5 h-5 text-primary" />
-            <span className="font-serif text-lg">{title ?? "Constellation Forensics"}</span>
+            <div className="w-8 h-8 rounded-lg bg-primary/20 border border-primary/30 flex items-center justify-center glow-border">
+              <span className="text-primary text-sm font-display font-bold">★</span>
+            </div>
+            <span className="font-display text-sm tracking-widest uppercase text-foreground/90">
+              {title ?? "Constellation Forensics"}
+            </span>
           </button>
           {headerRight && <div className="text-sm text-muted-foreground">{headerRight}</div>}
         </div>
       </header>
-      <main className="flex-1 px-6 pb-12">{children}</main>
+      <main className="flex-1 px-6 pb-12 relative z-10">{children}</main>
     </div>
   );
 }

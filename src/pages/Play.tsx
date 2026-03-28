@@ -24,7 +24,7 @@ export default function Play() {
 
   useEffect(() => {
     if (!levelId) {
-      setError("No puzzle selected.");
+      setError("No mission selected.");
       setLoading(false);
       return;
     }
@@ -37,7 +37,7 @@ export default function Play() {
         timer.reset();
         timer.start();
       })
-      .catch(() => setError("Could not load puzzle."))
+      .catch(() => setError("Could not load mission data."))
       .finally(() => setLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [levelId]);
@@ -80,13 +80,17 @@ export default function Play() {
     });
   }, [level, edges, timer, navigate]);
 
-  if (loading) return <StatusMessage variant="loading" message="Loading puzzle…" />;
-  if (error || !level) return <StatusMessage variant="error" message={error ?? "Puzzle not found."} />;
+  if (loading) return <StatusMessage variant="loading" message="Loading mission…" />;
+  if (error || !level) return <StatusMessage variant="error" message={error ?? "Mission not found."} />;
 
   return (
     <PageShell
       title={level.title}
-      headerRight={<span className="text-xs uppercase tracking-wider">{level.constellation}</span>}
+      headerRight={
+        <span className="text-xs uppercase tracking-widest font-display text-primary/70">
+          {level.constellation}
+        </span>
+      }
     >
       <div className="max-w-5xl mx-auto grid lg:grid-cols-[1fr_280px] gap-6 items-start">
         <motion.div
